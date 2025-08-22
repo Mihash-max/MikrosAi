@@ -4,71 +4,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mikros AI</title>
+  <!-- Improved: Added a favicon and Google Fonts for enhanced visual appeal -->
+  <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f680.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
-      height: 100vh;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-family: "Poppins", sans-serif;
+      font-family: "Poppins", Arial, Helvetica, sans-serif;
       background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
       background-size: 400% 400%;
       animation: gradientBG 12s ease infinite;
       color: #f1f5f9;
       text-align: center;
+      transition: background 0.5s;
     }
-
     @keyframes gradientBG {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
     }
-
     h1 {
       font-size: 3em;
       color: #38bdf8;
       text-shadow: 0 0 20px #38bdf8, 0 0 40px #38bdf8;
       animation: glow 2s ease-in-out infinite alternate;
+      margin-bottom: 0.25em;
+      font-weight: 600;
     }
-
     @keyframes glow {
       from { text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8; }
       to { text-shadow: 0 0 20px #0ea5e9, 0 0 40px #0ea5e9; }
     }
-
     p {
-      font-size: 1.2em;
-      margin: 20px 0;
-      opacity: 0.9;
+      font-size: 1.25em;
+      margin: 16px 0 32px 0;
+      opacity: 0.92;
+      font-weight: 400;
+      letter-spacing: 0.01em;
     }
-
     .btn {
       display: inline-block;
-      padding: 12px 25px;
-      margin-top: 20px;
+      padding: 14px 32px;
+      margin-top: 10px;
       font-size: 1.1em;
-      font-weight: bold;
+      font-weight: 600;
       color: white;
-      background: #38bdf8;
+      background: linear-gradient(90deg, #38bdf8 40%, #0ea5e9 100%);
       border: none;
-      border-radius: 25px;
+      border-radius: 30px;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 0 15px #38bdf8, 0 0 30px #38bdf8;
-      transition: 0.3s;
+      box-shadow: 0 0 16px #38bdf8, 0 0 32px #0ea5e9;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      outline: none;
     }
-
-    .btn:hover {
-      background: #0ea5e9;
-      box-shadow: 0 0 20px #0ea5e9, 0 0 40px #0ea5e9;
+    .btn:hover, .btn:focus {
+      background: linear-gradient(90deg, #0ea5e9 20%, #38bdf8 90%);
+      box-shadow: 0 0 24px #0ea5e9, 0 0 48px #38bdf8;
+      transform: translateY(-3px) scale(1.04);
+    }
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      h1 { font-size: 2em; }
+      .btn { padding: 12px 18px; font-size: 1em; }
+      p { font-size: 1em; }
     }
   </style>
 </head>
 <body>
-  <h1>🚀 Welcome to Mikros AI</h1>
+  <h1 aria-label="Rocket Welcome to Mikros AI">🚀 Welcome to Mikros AI</h1>
   <p>Your future AI companion is here.</p>
-  <a href="https://github.com/Mihash-max/MikrosAi" class="btn">View on GitHub</a>
+  <a href="https://github.com/Mihash-max/MikrosAi" class="btn" target="_blank" rel="noopener">View on GitHub</a>
 </body>
 </html>
