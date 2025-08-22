@@ -1,89 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mikros AI</title>
-  <!-- Improved: Added a favicon and Google Fonts for enhanced visual appeal -->
-  <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f680.png">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-family: "Poppins", Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
-      background-size: 400% 400%;
-      animation: gradientBG 12s ease infinite;
-      color: #f1f5f9;
-      text-align: center;
-      transition: background 0.5s;
-    }
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-    h1 {
-      font-size: 3em;
-      color: #38bdf8;
-      text-shadow: 0 0 20px #38bdf8, 0 0 40px #38bdf8;
-      animation: glow 2s ease-in-out infinite alternate;
-      margin-bottom: 0.25em;
-      font-weight: 600;
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8; }
-      to { text-shadow: 0 0 20px #0ea5e9, 0 0 40px #0ea5e9; }
-    }
-    p {
-      font-size: 1.25em;
-      margin: 16px 0 32px 0;
-      opacity: 0.92;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-    }
-    .btn {
-      display: inline-block;
-      padding: 14px 32px;
-      margin-top: 10px;
-      font-size: 1.1em;
-      font-weight: 600;
-      color: white;
-      background: linear-gradient(90deg, #38bdf8 40%, #0ea5e9 100%);
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 0 16px #38bdf8, 0 0 32px #0ea5e9;
-      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
-      outline: none;
-    }
-    .btn:hover, .btn:focus {
-      background: linear-gradient(90deg, #0ea5e9 20%, #38bdf8 90%);
-      box-shadow: 0 0 24px #0ea5e9, 0 0 48px #38bdf8;
-      transform: translateY(-3px) scale(1.04);
-    }
-    /* Responsive Design */
-    @media (max-width: 600px) {
-      h1 { font-size: 2em; }
-      .btn { padding: 12px 18px; font-size: 1em; }
-      p { font-size: 1em; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Message Board</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .message-board {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .post-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .messages {
+            margin-top: 20px;
+        }
+        
+        .message {
+            background: white;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .message-content {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .no-messages {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        @media (max-width: 600px) {
+            .message-board {
+                padding: 15px;
+            }
+            
+            .post-form {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1 aria-label="Rocket Welcome to Mikros AI">🚀 Welcome to Mikros AI</h1>
-  <p>Your future AI companion is here.</p>
-  <a href="https://github.com/Mihash-max/MikrosAi" class="btn" target="_blank" rel="noopener">View on GitHub</a>
+    <div class="message-board">
+        <h1>Public Message Board</h1>
+        
+        <div class="post-form">
+            <h2>Post a Message</h2>
+            <div class="form-group">
+                <label for="name">Your Name (optional):</label>
+                <input type="text" id="name" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" placeholder="Write your message here..." required></textarea>
+            </div>
+            <button id="post-btn">Post Message</button>
+        </div>
+        
+        <div class="messages" id="messages-container">
+            <!-- Messages will be displayed here -->
+            <div class="no-messages" id="no-messages">No messages yet. Be the first to post!</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const nameInput = document.getElementById('name');
+            const messageInput = document.getElementById('message');
+            const postBtn = document.getElementById('post-btn');
+            const messagesContainer = document.getElementById('messages-container');
+            const noMessages = document.getElementById('no-messages');
+            
+            // Load messages from localStorage
+            loadMessages();
+            
+            // Add event listener to post button
+            postBtn.addEventListener('click', function() {
+                postMessage();
+            });
+            
+            // Allow pressing Enter to submit (but allow Shift+Enter for new lines)
+            messageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    postMessage();
+                }
+            });
+            
+            function postMessage() {
+                const name = nameInput.value.trim() || 'Anonymous';
+                const message = messageInput.value.trim();
+                
+                if (!message) {
+                    alert('Please enter a message');
+                    return;
+                }
+                
+                // Create message object
+                const messageObj = {
+                    name: name,
+                    message: message,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Save to localStorage
+                saveMessage(messageObj);
+                
+                // Add to display
+                addMessageToDisplay(messageObj);
+                
+                // Clear input fields
+                messageInput.value = '';
+                
+                // Hide "no messages" text if it's the first message
+                if (noMessages) {
+                    noMessages.style.display = 'none';
+                }
+            }
+            
+            function saveMessage(messageObj) {
+                // Get existing messages or initialize empty array
+                const messages = JSON.parse(localStorage.getItem('boardMessages')) || [];
+                
+                // Add new message
+                messages.push(messageObj);
+                
+                // Save back to localStorage
+                localStorage.setItem('boardMessages', JSON.stringify(messages));
+            }
+            
+            function loadMessages() {
+                const messages = JSON.parse(localStorage.getItem('boardMessages')) || [];
+                
+                if (messages.length === 0) {
+                    // Show "no messages" text
+                    if (noMessages) {
+                        noMessages.style.display = 'block';
+                    }
+                    return;
+                }
+                
+                // Hide "no messages" text
+                if (noMessages) {
+                    noMessages.style.display = 'none';
+                }
+                
+                // Add each message to display
+                messages.forEach(function(messageObj) {
+                    addMessageToDisplay(messageObj);
+                });
+            }
+            
+            function addMessageToDisplay(messageObj) {
+                const messageEl = document.createElement('div');
+                messageEl.className = 'message';
+                
+                // Format date
+                const date = new Date(messageObj.timestamp);
+                const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                
+                messageEl.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-author">${escapeHtml(messageObj.name)}</span>
+                        <span class="message-date">${formattedDate}</span>
+                    </div>
+                    <div class="message-content">${formatMessage(escapeHtml(messageObj.message))}</div>
+                `;
+                
+                messagesContainer.insertBefore(messageEl, messagesContainer.firstChild);
+            }
+            
+            function formatMessage(text) {
+                // Replace URLs with clickable links
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                return text.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+            }
+            
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        });
+    </script>
 </body>
 </html>
