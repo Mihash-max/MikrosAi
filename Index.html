@@ -6,33 +6,69 @@
   <title>Mikros AI</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
       color: #f1f5f9;
       text-align: center;
-      padding: 50px;
     }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
     h1 {
+      font-size: 3em;
       color: #38bdf8;
+      text-shadow: 0 0 20px #38bdf8, 0 0 40px #38bdf8;
+      animation: glow 2s ease-in-out infinite alternate;
     }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8; }
+      to { text-shadow: 0 0 20px #0ea5e9, 0 0 40px #0ea5e9; }
+    }
+
     p {
-      font-size: 18px;
+      font-size: 1.2em;
+      margin: 20px 0;
+      opacity: 0.9;
     }
-    .box {
-      background: #1e293b;
-      padding: 20px;
-      margin: 20px auto;
-      border-radius: 12px;
-      max-width: 400px;
-      box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      margin-top: 20px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: white;
+      background: #38bdf8;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 15px #38bdf8, 0 0 30px #38bdf8;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #0ea5e9;
+      box-shadow: 0 0 20px #0ea5e9, 0 0 40px #0ea5e9;
     }
   </style>
 </head>
 <body>
   <h1>🚀 Welcome to Mikros AI</h1>
-  <div class="box">
-    <p>Hello Chidubem 👋</p>
-    <p>Your website is live on GitHub Pages!</p>
-  </div>
+  <p>Your future AI companion is here.</p>
+  <a href="https://github.com/Mihash-max/MikrosAi" class="btn">View on GitHub</a>
 </body>
 </html>
