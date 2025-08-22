@@ -3,52 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mikros Community Board</title>
+  <title>Community Pasteboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-storage-compat.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
-    .post-box { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
-    textarea { width: 100%; height: 80px; margin-bottom: 10px; }
-    button { padding: 8px 16px; border: none; border-radius: 5px; background: #007bff; color: white; cursor: pointer; }
-    button:hover { background: #0056b3; }
+    body { font-family: Arial, sans-serif; background:#f4f4f9; margin:0; padding:0; }
+    header { background:#333; color:#fff; padding:15px; text-align:center; }
+    .container { max-width:700px; margin:20px auto; padding:20px; background:#fff; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
+    input, textarea, button { width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:5px; }
+    button { background:#333; color:#fff; cursor:pointer; }
+    button:hover { background:#555; }
+    .post { border-bottom:1px solid #ddd; padding:10px; }
+    .post h4 { margin:0; color:#333; }
+    .post p { margin:5px 0; }
+    .post img, .post video { max-width:100%; border-radius:5px; margin-top:10px; }
   </style>
 </head>
 <body>
-  <h1>🌍 Mikros Community Board</h1>
-  <p>Write your name and share your thoughts, photos, or videos.</p>
+  <header>
+    <h2>🌍 Community Pasteboard</h2>
+    <p>Share your text, images, or videos with everyone!</p>
+  </header>
 
-  <input type="text" id="name" placeholder="Your Name"><br><br>
-  <textarea id="text" placeholder="Write something..."></textarea><br>
-  <input type="file" id="file" accept="image/*,video/*"><br><br>
-  <button onclick="post()">Post</button>
+  <div class="container">
+    <input type="text" id="name" placeholder="Enter your name" required>
+    <textarea id="message" placeholder="Write something..."></textarea>
+    <input type="file" id="fileInput" accept="image/*,video/*" capture="environment">
+    <button onclick="postMessage()">Post</button>
+  </div>
 
-  <h2>Posts</h2>
-  <div id="posts"></div>
+  <div class="container" id="posts">
+    <h3>Recent Posts</h3>
+  </div>
 
   <script>
-    function post() {
-      let name = document.getElementById("name").value;
-      let text = document.getElementById("text").value;
-      let file = document.getElementById("file").files[0];
+    // TODO: Replace this with your own Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-      let postDiv = document.createElement("div");
-      postDiv.className = "post-box";
-      postDiv.innerHTML = `<strong>${name}</strong><p>${text}</p>`;
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
+
+    // Function to post message
+    function postMessage() {
+      const name = document.getElementById("name").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const file = document.getElementById("fileInput").files[0];
+
+      if (!name) { alert("Please enter your name."); return; }
+
+      let postData = { name, message, timestamp: Date.now() };
 
       if (file) {
-        let url = URL.createObjectURL(file);
-        if (file.type.startsWith("image/")) {
-          postDiv.innerHTML += `<img src="${url}" style="max-width:100%; border-radius:8px;">`;
-        } else if (file.type.startsWith("video/")) {
-          postDiv.innerHTML += `<video src="${url}" controls style="max-width:100%; border-radius:8px;"></video>`;
-        }
+        const storageRef = storage.ref('uploads/' + Date.now() + "_" + file.name);
+        storageRef.put(file).then(snapshot => {
+          snapshot.ref.getDownloadURL().then(url => {
+            postData.fileUrl = url;
+            postData.fileType = file.type.startsWith("video") ? "video" : "image";
+            db.ref("posts").push(postData);
+          });
+        });
+      } else {
+        db.ref("posts").push(postData);
       }
 
-      document.getElementById("posts").prepend(postDiv);
-
-      // clear input
-      document.getElementById("text").value = "";
-      document.getElementById("file").value = "";
+      document.getElementById("message").value = "";
+      document.getElementById("fileInput").value = "";
     }
+
+    // Function to display posts
+    db.ref("posts").on("child_added", snapshot => {
+      const data = snapshot.val();
+      const postsDiv = document.getElementById("posts");
+
+      const postEl = document.createElement("div");
+      postEl.classList.add("post");
+      postEl.innerHTML = `
+        <h4>${data.name}</h4>
+        <p>${data.message || ""}</p>
+        ${data.fileUrl ? 
+          (data.fileType === "video" 
+            ? `<video controls src="${data.fileUrl}"></video>` 
+            : `<img src="${data.fileUrl}" alt="post">`
+          ) 
+        : ""}
+      `;
+      postsDiv.appendChild(postEl);
+    });
   </script>
 </body>
-</html>
+  </html>
