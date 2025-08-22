@@ -1,13 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mikros AI</title>
+  <title>Mikros Community Board</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
+    .post-box { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+    textarea { width: 100%; height: 80px; margin-bottom: 10px; }
+    button { padding: 8px 16px; border: none; border-radius: 5px; background: #007bff; color: white; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
 </head>
 <body>
-  <h1>Welcome to Mikros AI 🚀</h1>
-  <p>This is your very first live website running on GitHub Pages!</p>
+  <h1>🌍 Mikros Community Board</h1>
+  <p>Write your name and share your thoughts, photos, or videos.</p>
+
+  <input type="text" id="name" placeholder="Your Name"><br><br>
+  <textarea id="text" placeholder="Write something..."></textarea><br>
+  <input type="file" id="file" accept="image/*,video/*"><br><br>
+  <button onclick="post()">Post</button>
+
+  <h2>Posts</h2>
+  <div id="posts"></div>
+
+  <script>
+    function post() {
+      let name = document.getElementById("name").value;
+      let text = document.getElementById("text").value;
+      let file = document.getElementById("file").files[0];
+
+      let postDiv = document.createElement("div");
+      postDiv.className = "post-box";
+      postDiv.innerHTML = `<strong>${name}</strong><p>${text}</p>`;
+
+      if (file) {
+        let url = URL.createObjectURL(file);
+        if (file.type.startsWith("image/")) {
+          postDiv.innerHTML += `<img src="${url}" style="max-width:100%; border-radius:8px;">`;
+        } else if (file.type.startsWith("video/")) {
+          postDiv.innerHTML += `<video src="${url}" controls style="max-width:100%; border-radius:8px;"></video>`;
+        }
+      }
+
+      document.getElementById("posts").prepend(postDiv);
+
+      // clear input
+      document.getElementById("text").value = "";
+      document.getElementById("file").value = "";
+    }
+  </script>
 </body>
 </html>
