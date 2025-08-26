@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mikros AI Community Chat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #1e293b;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    #chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .message {
+      padding: 10px;
+      border-radius: 8px;
+      background: #334155;
+      max-width: 70%;
+    }
+    .self {
+      align-self: flex-end;
+      background: #3b82f6;
+    }
+    #chat-input {
+      display: flex;
+      padding: 10px;
+      background: #1e293b;
+    }
+    #chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+    }
+    #chat-input button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>💬 Mikros AI Community Chat</header>
 
+  <div id="chat-box"></div>
+
+  <div id="chat-input">
+    <input type="text" id="messageInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKLlLEFUXAqs3vMuEpHuz111cragXBStU",
+      authDomain: "mikrosai-ee303.firebaseapp.com",
+      projectId: "mikrosai-ee303",
+      storageBucket: "mikrosai-ee303.firebasestorage.app",
+      messagingSenderId: "846642407951",
+      appId: "1:846642407951:web:6ad22bcea4b775d45ad17a",
+      measurementId: "G-8M6WJFR32Q"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const chatBox = document.getElementById("chat-box");
+    const messageInput = document.getElementById("messageInput");
+
+    async function sendMessage() {
+      const text = messageInput.value.trim();
+      if (text) {
+        await addDoc(collection(db, "messages"), {
+          text: text,
+          timestamp: Date.now()
+        });
+        messageInput.value = "";
+      }
+    }
+
+    const q = query(collection(db, "messages"), orderBy("timestamp"));
+    onSnapshot(q, (snapshot) => {
+      chatBox.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.textContent = data.text;
+        chatBox.appendChild(div);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  </script>
+</body>
+  </html>
