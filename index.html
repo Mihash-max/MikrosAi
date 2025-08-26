@@ -35,10 +35,14 @@
       border-radius: 8px;
       background: #334155;
       max-width: 70%;
+      word-break: break-word;
+      margin-bottom: 2px;
+      transition: background 0.2s;
     }
     .self {
       align-self: flex-end;
       background: #3b82f6;
+      color: #fff;
     }
     #chat-input {
       display: flex;
@@ -51,6 +55,9 @@
       border: none;
       border-radius: 6px;
       outline: none;
+      font-size: 16px;
+      background: #334155;
+      color: white;
     }
     #chat-input button {
       margin-left: 10px;
@@ -60,6 +67,11 @@
       background: #3b82f6;
       color: white;
       cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+    #chat-input button:hover {
+      background: #2563eb;
     }
   </style>
 </head>
@@ -68,43 +80,64 @@
 
   <div id="chat-box"></div>
 
-  <div id="chat-input">
-    <input type="text" id="messageInput" placeholder="Type a message...">
-    <button onclick="sendMessage()">Send</button>
-  </div>
+  <form id="chat-input" autocomplete="off">
+    <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
 
   <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+    // --- CONFIG FIX: storageBucket typo corrected (.app → .com)
     const firebaseConfig = {
       apiKey: "AIzaSyDKLlLEFUXAqs3vMuEpHuz111cragXBStU",
       authDomain: "mikrosai-ee303.firebaseapp.com",
       projectId: "mikrosai-ee303",
-      storageBucket: "mikrosai-ee303.firebasestorage.app",
+      storageBucket: "mikrosai-ee303.appspot.com", // FIXED typo here
       messagingSenderId: "846642407951",
       appId: "1:846642407951:web:6ad22bcea4b775d45ad17a",
       measurementId: "G-8M6WJFR32Q"
     };
+
+    // --- User identification (per session, not auth)
+    let username = localStorage.getItem("mikrosai-username");
+    if (!username) {
+      username = "User" + Math.floor(Math.random() * 9000 + 1000); // e.g. User1234
+      localStorage.setItem("mikrosai-username", username);
+    }
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
     const chatBox = document.getElementById("chat-box");
     const messageInput = document.getElementById("messageInput");
+    const chatForm = document.getElementById("chat-input");
 
-    async function sendMessage() {
-      const text = messageInput.value.trim();
-      if (text) {
-        await addDoc(collection(db, "messages"), {
-          text: text,
-          timestamp: Date.now()
-        });
-        messageInput.value = "";
+    async function sendMessage(text) {
+      if (text && text.trim() !== "") {
+        try {
+          await addDoc(collection(db, "messages"), {
+            text: text.trim(),
+            timestamp: serverTimestamp(),
+            user: username
+          });
+        } catch (e) {
+          alert("Failed to send message: " + e.message);
+        }
       }
     }
 
+    // Handle sending on 'Enter' and on click, and prevent form reload
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = messageInput.value;
+      sendMessage(text);
+      messageInput.value = "";
+    });
+
+    // Listen for new messages and render
     const q = query(collection(db, "messages"), orderBy("timestamp"));
     onSnapshot(q, (snapshot) => {
       chatBox.innerHTML = "";
@@ -112,11 +145,25 @@
         const data = doc.data();
         const div = document.createElement("div");
         div.classList.add("message");
-        div.textContent = data.text;
+        if (data.user === username) {
+          div.classList.add("self");
+        }
+        // Timestamp formatting
+        let timeDisplay = "";
+        if (data.timestamp && data.timestamp.toDate) {
+          const date = data.timestamp.toDate();
+          timeDisplay = `<span style="font-size:11px; color:#a0aec0; margin-left:8px;">${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}</span>`;
+        }
+        div.innerHTML = `<b>${data.user || "Unknown"}:</b> ${data.text || ""} ${timeDisplay}`;
         chatBox.appendChild(div);
       });
       chatBox.scrollTop = chatBox.scrollHeight;
     });
+
+    // Optional: autofocus input on load
+    window.onload = () => {
+      messageInput.focus();
+    };
   </script>
 </body>
-  </html>
+</html>
