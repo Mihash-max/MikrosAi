@@ -3,154 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mikros Community</title>
+  <title>Community Board + AI Portal</title>
   <script src="https://js.puter.com/v2/"></script>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      display: flex;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 2fr 1fr; /* Board bigger, AI smaller */
       height: 100vh;
-      background: #f4f4f4;
     }
-    /* Left side: Community board */
-    .board {
-      flex: 3;
+    #board {
+      border-right: 2px solid #ddd;
       padding: 20px;
       overflow-y: auto;
-      background: white;
-      border-right: 2px solid #ddd;
+    }
+    #aiPortal {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      border-left: 2px solid #ddd;
+    }
+    #posts {
+      margin-top: 20px;
     }
     .post {
       border: 1px solid #ccc;
-      background: #fafafa;
       padding: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       border-radius: 8px;
     }
-    .upload-box {
-      margin-bottom: 20px;
+    video, img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 5px;
     }
-    /* Right side: AI chat */
-    .chat {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: #1e1e2f;
-      color: white;
+    #chatOutput {
+      flex-grow: 1;
+      border: 1px solid #ccc;
       padding: 10px;
-    }
-    .chat-messages {
-      flex: 1;
       overflow-y: auto;
       margin-bottom: 10px;
+      border-radius: 8px;
     }
-    .chat-input {
-      display: flex;
-    }
-    .chat-input input {
-      flex: 1;
+    #chatInput {
       padding: 8px;
-      border: none;
-      border-radius: 5px;
-    }
-    .chat-input button {
-      margin-left: 5px;
-      padding: 8px;
-      border: none;
-      background: #4cafef;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <!-- Left side: Community board -->
-  <div class="board">
+  <!-- Community Board -->
+  <div id="board">
     <h2>Community Board</h2>
-    <div class="upload-box">
-      <textarea id="postText" placeholder="Write something..." rows="3" style="width:100%;"></textarea>
-      <input type="file" id="fileInput" accept="image/*,video/*">
-      <button onclick="addPost()">Post</button>
-    </div>
+    <form id="uploadForm">
+      <textarea id="postText" placeholder="Write something..." rows="3" style="width:100%;"></textarea><br>
+      <input type="file" id="fileInput" accept="image/*,video/*"><br><br>
+      <button type="submit">Post</button>
+    </form>
     <div id="posts"></div>
   </div>
 
-  <!-- Right side: Chat with AI -->
-  <div class="chat">
-    <h3>Chat with AI</h3>
-    <div class="chat-messages" id="chatMessages"></div>
-    <div class="chat-input">
-      <input type="text" id="chatInput" placeholder="Ask the AI...">
-      <button onclick="sendMessage()">Send</button>
-    </div>
+  <!-- AI Portal -->
+  <div id="aiPortal">
+    <h2>AI Chat</h2>
+    <div id="chatOutput">Ask me anything...</div>
+    <input type="text" id="chatInput" placeholder="Type your question and press Enter">
   </div>
 
   <script>
-    // COMMUNITY POSTS
-    function addPost() {
-      const text = document.getElementById("postText").value;
-      const file = document.getElementById("fileInput").files[0];
-      const postContainer = document.getElementById("posts");
+    // --- Community Board posting ---
+    const form = document.getElementById('uploadForm');
+    const posts = document.getElementById('posts');
 
-      let newPost = document.createElement("div");
-      newPost.classList.add("post");
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = document.getElementById('postText').value;
+      const file = document.getElementById('fileInput').files[0];
+      const post = document.createElement('div');
+      post.className = 'post';
 
       if (text) {
-        let p = document.createElement("p");
+        const p = document.createElement('p');
         p.textContent = text;
-        newPost.appendChild(p);
+        post.appendChild(p);
       }
 
       if (file) {
         const url = URL.createObjectURL(file);
-        if (file.type.startsWith("image")) {
-          let img = document.createElement("img");
+        if (file.type.startsWith('image')) {
+          const img = document.createElement('img');
           img.src = url;
-          img.style.maxWidth = "100%";
-          newPost.appendChild(img);
-        } else if (file.type.startsWith("video")) {
-          let video = document.createElement("video");
-          video.src = url;
-          video.controls = true;
-          video.style.maxWidth = "100%";
-          newPost.appendChild(video);
+          post.appendChild(img);
+        } else if (file.type.startsWith('video')) {
+          const vid = document.createElement('video');
+          vid.src = url;
+          vid.controls = true;
+          post.appendChild(vid);
         }
       }
 
-      postContainer.prepend(newPost);
-      document.getElementById("postText").value = "";
-      document.getElementById("fileInput").value = "";
-    }
+      posts.prepend(post);
+      form.reset();
+    });
 
-    // AI CHAT
-    async function sendMessage() {
-      const input = document.getElementById("chatInput");
-      const msgBox = document.getElementById("chatMessages");
+    // --- AI Chat ---
+    const chatInput = document.getElementById('chatInput');
+    const chatOutput = document.getElementById('chatOutput');
 
-      if (!input.value.trim()) return;
+    chatInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const userMsg = chatInput.value;
+        chatOutput.innerHTML += `<div><b>You:</b> ${userMsg}</div>`;
+        chatInput.value = "";
 
-      let userMsg = document.createElement("div");
-      userMsg.textContent = "🧑: " + input.value;
-      msgBox.appendChild(userMsg);
-
-      let userInput = input.value;
-      input.value = "";
-
-      // Call Puter AI
-      try {
-        const response = await puter.ai.chat(userInput, {model: 'claude-sonnet-4'});
-        let aiMsg = document.createElement("div");
-        aiMsg.textContent = "🤖: " + response.message.content[0].text;
-        msgBox.appendChild(aiMsg);
-        msgBox.scrollTop = msgBox.scrollHeight;
-      } catch (e) {
-        let errorMsg = document.createElement("div");
-        errorMsg.textContent = "⚠️ Error talking to AI.";
-        msgBox.appendChild(errorMsg);
+        puter.ai.chat(userMsg, {model: 'claude-sonnet-4'})
+          .then(response => {
+            const aiMsg = response.message.content[0].text;
+            chatOutput.innerHTML += `<div><b>AI:</b> ${aiMsg}</div>`;
+            chatOutput.scrollTop = chatOutput.scrollHeight;
+          });
       }
-    }
+    });
   </script>
 </body>
 </html>
