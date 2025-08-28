@@ -1,121 +1,87 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wai-aria annotations tests</title>
+    <title>Innovation Boost: Next Big Leap</title>
     <style>
-      html {
-        font-family: sans-serif;
-      }
-
-      ins, [role="insertion"] {
-        color: #0c0;
-        text-decoration: underline;
-      }
-
-      del, [role="deletion"] {
-        color: red;
-        text-decoration: line-through;
-      }
-
-      ins, [role="insertion"], del, [role="deletion"] {
-        text-decoration-thickness: 2px;
-        background-color: #fee;
-        padding: 2px 4px;
-        margin: 0 1px;
-      }
-
-      [role="comment"] {
-        padding: 5px 10px 10px 15px;
-        background: #eee;
-        border: 1px solid #ccc;
-        width: 250px;
-        margin-bottom: 10px;
-      }
-
-      [role="comment"] > [role="comment"] {
-        width: 84%;
-      }
-
-      [data-author="chris"] {
-        border-left: 7px solid red;
-      }
-
-      [data-author="marcus"] {
-        border-left: 7px solid blue;
-      }
-
-      [role="comment"] .comment-text {
-        line-height: 1.5;
-        font-size: 0.9rem;
-      }
-
-      [role="comment"] h3 {
-        font-size: 1.1rem;
-      }
-
-      [role="comment"] time {
-        font-size: 0.8rem;
-      }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f2f5;
+        }
+        .hero {
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80'); /* Ship image */
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+        }
+        .hero h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+        .donate-section {
+            padding: 50px 20px;
+        }
+        .donate-button {
+            background-color: #ff6600;
+            color: white;
+            font-size: 1.5em;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .donate-button:hover {
+            background-color: #e65c00;
+        }
+        .account-info {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .project-details {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
-  </head>
-  <body>
-    <section>
-      <h2>Basic description</h2>
-      <div aria-description="Choose your favourite fruit — the fruit with the highest number of votes will be added to the lunch options next week.">
-        <p>Pick your favourite fruit:</p>
-        <form>
-          <ul>
-            <li><label>Apple: <input type="radio" name="fruit" value="apple"></label></li>
-            <li><label>Orange: <input type="radio" name="fruit" value="orange"></label></li>
-            <li><label>Banana: <input type="radio" name="fruit" value="banana"></label></li>
-          </ul>
-        </form>
-      </div>
-    </section>
-    <section>
-      <h2>Suggestions</h2>
+</head>
+<body>
 
-      <p>Freida’s pet is a <del>black Cat called Luna</del><ins>purple Tyrannosaurus Rex called Tiny</ins>.</p>
+    <div class="hero">
+        <h1>Support the Next Big Leap in Food Innovation!</h1>
+    </div>
 
-      <p>Freida’s pet is a <span role="deletion">black Cat called Luna</span><span role="insertion">purple Tyrannosaurus Rex called Tiny</span>.</p>
-
-      <p>Freida’s pet is a
-        <span role="suggestion"><span role="deletion">black Cat called Luna</span><span role="insertion">purple Tyrannosaurus Rex called Tiny</span></span>.
-      </p>
-    </section>
-    <section>
-      <h2>Comments</h2>
-
-      <p>The last half of the song is a slow-rising crescendo that peaks at the <mark aria-details="thread-1 thread-2">end of the guitar solo</mark>, before fading away sharply.</p>
-
-      <div role="comment" id="thread-1" data-author="chris">
-        <h3>Chris said</h3>
-        <p class="comment-text">I really think this moment could use more cowbell.</p>
-        <p><time datetime="2019-03-30T19:29">March 30 2019, 19:29</time></p>
-      </div>
-
-      <div role="comment" id="thread-2" data-author="marcus">
-        <h3>Marcus said</h3>
-        <p class="comment-text">The guitar solo could do with a touch more chorus, and a slightly lower volume.</p>
-        <p><time datetime="2019-03-29T15:35">March 29 2019, 15:35</time></p>
-      </div>
-
-      <p>The last half of the song is a slow-rising crescendo that peaks at the <mark aria-details="thread-3">end of the guitar solo</mark>, before fading away sharply.</p>
-
-      <div role="comment" id="thread-3" data-author="chris">
-        <h3>Chris said</h3>
-        <p class="comment-text">I really think this moment could use more cowbell.</p>
-        <p><time datetime="2019-03-30T19:29">March 30 2019, 19:29</time></p>
-
-        <div role="comment" data-author="marcus">
-          <h3>Marcus replied</h3>
-          <p class="comment-text">I don't know about that. I think the cowbell could distract  from the solo.</p>
-          <p><time datetime="2019-03-30T21:02">March 30 2019, 21:02</time></p>
+    <div class="donate-section">
+        <a href="https://www.naijafund.com/campaign/innovation-boost-supporting-the-next-big-leap-2/" target="_blank" class="donate-button">
+            Donate Now
+        </a>
+        <div class="account-info">
+            Or transfer directly to this number: <strong>090-618-77570</strong>
         </div>
-      </div>
-    </section>
+    </div>
 
-  </body>
+    <div class="project-details">
+        <h2>About the Project</h2>
+        <p>
+            "Innovation Boost: Supporting the Next Big Leap 2" is an initiative to revolutionize global food production with a floating, AI-controlled farmland system.
+            Our mission is to provide fresh and affordable food for communities worldwide, even in extreme conditions.
+        </p>
+        <p>
+            Your support helps us develop, maintain, and operate this high-tech solution, bringing us closer to a sustainable and nutritious future for everyone.
+        </p>
+    </div>
+
+</body>
 </html>
