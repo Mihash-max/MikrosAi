@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donate to Aqua Farm Revolution</title>
+    <title>Aqua Farm Revolution - Donate Now</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,23 +38,22 @@
             margin-top: -30px;
             z-index: 1;
         }
-        .form-group {
-            margin: 20px 0;
+        .donation-note {
+            font-size: 1.2em;
+            margin: 20px 0 40px 0;
+            color: #ff6600;
+            font-weight: bold;
         }
-        input, textarea, button {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1em;
-        }
-        button {
+        .start-button {
             background-color: #ff6600;
             color: white;
+            font-size: 1.5em;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
         }
-        button:hover {
+        .start-button:hover {
             background-color: #e65c00;
         }
         .story {
@@ -64,15 +63,13 @@
             background-color: #fff3e6;
             border-radius: 8px;
         }
-        .donation-note {
-            font-size: 1.1em;
-            margin-bottom: 20px;
-            color: #ff6600;
-            font-weight: bold;
-        }
         @media(max-width: 768px){
             .hero h1 {
                 font-size: 2em;
+            }
+            .start-button {
+                width: 80%;
+                font-size: 1.2em;
             }
         }
     </style>
@@ -80,48 +77,30 @@
 <body>
 
     <div class="hero">
-        <h1>Aqua Farm Revolution Donation Page</h1>
+        <h1>Aqua Farm Revolution</h1>
     </div>
 
     <div class="container">
         <p class="donation-note">
-            This donation is to support <strong>Aqua Farm Revolution</strong>. Your contribution will help revolutionize sustainable aquaculture and floating farm technology.
+            Your contribution will fund the Aqua Farm Revolution initiative, supporting floating farms and sustainable aquaculture.
         </p>
-        <p>Fill in the form below to pre-fill the checkout page. Then press "Checkout" to complete your donation.</p>
 
-        <form id="donationForm">
-            <input type="text" id="name" placeholder="Full Name" required>
-            <input type="email" id="email" placeholder="Email Address" required>
-            <input type="text" id="phone" placeholder="Phone Number" required>
-            <input type="number" id="amount" placeholder="Amount (₦)" required>
-            <textarea id="note" placeholder="Any message or note (optional)"></textarea>
-            <button type="submit">Send to Checkout</button>
-        </form>
+        <button class="start-button" onclick="startDonation()">Start Donation</button>
 
         <div class="story">
             <h2>About Aqua Farm Revolution</h2>
             <p>
-                "Aqua Farm Revolution" is an initiative to revolutionize global food production through floating, AI-controlled aquaculture and farmland systems. 
-                Your donation helps provide fresh and sustainable seafood and food solutions for communities worldwide.
+                "Aqua Farm Revolution" is a project that aims to revolutionize global food production using floating, AI-controlled aquaculture systems. Your donation will help bring fresh, sustainable seafood and food to communities worldwide.
             </p>
         </div>
     </div>
 
     <script>
-        document.getElementById('donationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const name = encodeURIComponent(document.getElementById('name').value);
-            const email = encodeURIComponent(document.getElementById('email').value);
-            const phone = encodeURIComponent(document.getElementById('phone').value);
-            const amount = encodeURIComponent(document.getElementById('amount').value);
-            const note = encodeURIComponent(document.getElementById('note').value);
-
-            // NaijaFund checkout page
-            const checkoutURL = `https://www.naijafund.com/checkout/?name=${name}&email=${email}&phone=${phone}&amount=${amount}&note=${note}`;
-            window.location.href = checkoutURL;
-        });
+        function startDonation() {
+            // Redirect to NaijaFund checkout page
+            window.location.href = "https://www.naijafund.com/checkout/";
+        }
     </script>
 
 </body>
-            </html>
+</html>
