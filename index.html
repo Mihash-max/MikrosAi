@@ -9,7 +9,6 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
-            color: #333;
             text-align: center;
         }
         .container {
@@ -23,7 +22,7 @@
         .form-group {
             margin: 20px 0;
         }
-        input[type="text"], input[type="email"], input[type="number"] {
+        input, textarea {
             width: 80%;
             padding: 12px;
             font-size: 1em;
@@ -55,27 +54,33 @@
 
     <div class="container">
         <h1>Support the Next Big Leap in Food Innovation!</h1>
-        <p>Fill the form below to donate. You’ll be redirected to the donation page to complete your gift.</p>
+        <p>Fill in the form below to pre-fill the donation checkout page. Then press "Checkout" to complete your donation.</p>
 
         <form id="donationForm">
             <div class="form-group">
-                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="text" id="name" placeholder="Full Name" required>
             </div>
             <div class="form-group">
-                <input type="email" id="email" placeholder="Your Email" required>
+                <input type="email" id="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="phone" placeholder="Phone Number" required>
             </div>
             <div class="form-group">
                 <input type="number" id="amount" placeholder="Amount (₦)" required>
             </div>
-            <button type="submit">Send</button>
+            <div class="form-group">
+                <textarea id="note" placeholder="Any message or note (optional)"></textarea>
+            </div>
+            <button type="submit">Send to Checkout</button>
         </form>
 
         <div class="story">
             <h2>About the Project</h2>
             <p>
                 "Innovation Boost: Supporting the Next Big Leap 2" is an initiative to revolutionize global food production 
-                through a floating, AI-controlled farmland system. Our mission is to provide fresh and affordable food 
-                for communities worldwide. Your donation helps bring this high-tech solution to life!
+                through a floating, AI-controlled farmland system. Your donation helps us bring fresh and affordable food 
+                to communities worldwide. Fill the form and click Send to proceed to the secure checkout page!
             </p>
         </div>
     </div>
@@ -86,14 +91,13 @@
             e.preventDefault();
             const name = encodeURIComponent(document.getElementById('name').value);
             const email = encodeURIComponent(document.getElementById('email').value);
+            const phone = encodeURIComponent(document.getElementById('phone').value);
             const amount = encodeURIComponent(document.getElementById('amount').value);
+            const note = encodeURIComponent(document.getElementById('note').value);
 
-            // Replace this with your actual NaijaFund donation link
-            const baseURL = "https://www.naijafund.com/campaign/innovation-boost-supporting-the-next-big-leap-2/";
-            
-            // Redirect with query parameters (NaijaFund must support prefill via URL for this to auto-fill)
-            const redirectURL = `${baseURL}?name=${name}&email=${email}&amount=${amount}`;
-            window.location.href = redirectURL;
+            // Redirect to NaijaFund checkout page
+            const checkoutURL = `https://www.naijafund.com/checkout/?name=${name}&email=${email}&phone=${phone}&amount=${amount}&note=${note}`;
+            window.location.href = checkoutURL;
         });
     </script>
 
